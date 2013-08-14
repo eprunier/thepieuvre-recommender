@@ -7,7 +7,7 @@
 
 (defn start
   [s]
-  (let [db (db/connect (:db s))]
+  (let [db (db/connect)]
     (assoc s :db db)))
 
 (defn stop
