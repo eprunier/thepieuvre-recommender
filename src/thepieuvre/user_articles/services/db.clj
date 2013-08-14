@@ -78,3 +78,11 @@
 (defn add-user
   [session user]
   (cql/insert session :users user))
+
+(defn get-user
+  [session email]
+  (cql/select session :users (query/where :email email)))
+
+(defn get-all-users
+  [session]
+  (cql/select session :users))
