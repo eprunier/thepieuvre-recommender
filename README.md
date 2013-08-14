@@ -4,13 +4,7 @@ TODO: Brief description
 
 
 
-## Releases and Dependency Information
-
-* Releases are published to TODO_LINK
-
-* Latest stable release is TODO_LINK
-
-* All released versions TODO_LINK
+## Dependency Information
 
 [Leiningen] dependency information:
 
@@ -35,15 +29,9 @@ TODO
 
 
 
-## Change Log
-
-* Version 0.1.0-SNAPSHOT
-
-
-
 ## Copyright and License
 
-Copyright © 2013 Eric Prunier All rights reserved.
+Copyright © 2013 Eric Prunier.
 
 The use and distribution terms for this software are covered by the
 [Eclipse Public License 1.0] which can be found in the file
