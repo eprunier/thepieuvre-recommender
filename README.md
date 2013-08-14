@@ -14,13 +14,13 @@ TODO: Brief description
 
 [Leiningen] dependency information:
 
-    [thepieuvre/read-articles "0.1.0-SNAPSHOT"]
+    [thepieuvre/user-articles "0.1.0-SNAPSHOT"]
 
 [Maven] dependency information:
 
     <dependency>
       <groupId>thepieuvre</groupId>
-      <artifactId>read-articles</artifactId>
+      <artifactId>user-articles</artifactId>
       <version>0.1.0-SNAPSHOT</version>
     </dependency>
 
@@ -43,7 +43,7 @@ TODO
 
 ## Copyright and License
 
-Copyright © 2013 TODO_INSERT_NAME All rights reserved.
+Copyright © 2013 Eric Prunier All rights reserved.
 
 The use and distribution terms for this software are covered by the
 [Eclipse Public License 1.0] which can be found in the file
