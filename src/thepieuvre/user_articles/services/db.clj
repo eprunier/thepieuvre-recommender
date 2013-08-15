@@ -4,11 +4,11 @@
             [clojurewerkz.cassaforte.query :as query]))
 
 ;;
-;; ## DB connection
+;; ## Connection
 ;;
 
 (defn connect
-  "Creates a connection to the Database.
+  "Creates a connection to the Database and returns a session.
 
    Optional parameters:
 
@@ -27,14 +27,14 @@
   [& {:keys [hosts port]
       :or {hosts ["127.0.0.1"]
            port 9042}}]
-  (let [db (-> {:contact-points hosts
-                :port port}
-               client/build-cluster
-               (client/connect :thepieuvre))]
-    db))
+  (-> {:contact-points hosts
+       :port port}
+      client/build-cluster
+      (client/connect :thepieuvre)))
+
 
 ;;
-;; ## Utilities for tables creation and CQL queries
+;; ## Utilities
 ;;
 
 (defn create-tables
@@ -49,20 +49,20 @@
                                                :primary-key [:email]}))
   (cql/create-table session
                     :articles
-                    (query/column-definitions {:article_id :uuid
+                    (query/column-definitions {:id :uuid
                                                :feed_id :uuid
-                                               :primary-key [:article_id]}))
-  (cql/create-table session
-                    :user_articles
-                    (query/column-definitions {:user_email :varchar
-                                               :article_id :uuid
-                                               :feed_id :uuid
-                                               :primary-key [:user_email :article_id]}))
+                                               :date :timestamp
+                                               :article_title :varchar
+                                               :primary-key [:id]}))
   (cql/create-table session
                     :read_articles
                     (query/column-definitions {:user_email :varchar
                                                :article_id :uuid
-                                               :feed_id :uuid
+                                               :primary-key [:user_email :article_id]}))  
+  (cql/create-table session
+                    :user_articles
+                    (query/column-definitions {:user_email :varchar
+                                               :article_id :uuid
                                                :primary-key [:user_email :article_id]})))
 
 (defn execute
@@ -70,18 +70,47 @@
   [session query]
   (client/execute session query))
 
+
 ;;
 ;; ## User operations
 ;;
 
 (defn add-user
+  "Add a new user."
   [session user]
   (cql/insert session :users user))
 
 (defn get-user
+  "Get a user by is email address."
   [session email]
   (cql/select session :users (query/where :email email)))
 
 (defn get-all-users
+  "Get all users."
   [session]
   (cql/select session :users))
+
+
+;;
+;; ## Article operations
+;;
+
+(defn add-article
+  [session article]
+  (cql/insert session :articles article))
+
+(defn get-all-articles
+  [session]
+  (cql/select session :articles))
+
+(defn add-read-article
+  [session user article]
+  (println (:email user))
+  (println (:id article))
+  (cql/insert session :read-articles
+              {:user_email (:email user)
+               :article_id (:id article)}))
+
+(defn get-all-read-articles
+  [session]
+  (cql/select session :read_articles))
