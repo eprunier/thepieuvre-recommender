@@ -24,10 +24,9 @@
       (connect :port 12345)
       (connect :hosts [\"192.168.1.1\" \"192.168.1.2\"]
                :port 12345)"
-  [& {:keys [hosts port] :as db-specs :or {hosts ["127.0.0.1"]
-                                           port 9042}}]
-  (println hosts)
-  (println port)
+  [& {:keys [hosts port]
+      :or {hosts ["127.0.0.1"]
+           port 9042}}]
   (let [db (-> {:contact-points hosts
                 :port port}
                client/build-cluster
