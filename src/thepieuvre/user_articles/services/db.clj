@@ -1,7 +1,7 @@
 (ns thepieuvre.user-articles.services.db
   (:require [qbits.alia :as alia]
             [qbits.alia.uuid :as uuid]
-            [qbits.hayt :refer [select insert where] :as hayt]))
+            [qbits.hayt :refer [select where insert values] :as hayt]))
 
 ;;
 ;; ## Connection
@@ -48,7 +48,7 @@
   [session]
   (alia/with-session session
     (doseq [table [:users :articles :read_articles :user_articles]]
-     (alia/execute (hayt/drop-table table)))))
+      (alia/execute (hayt/drop-table table)))))
 
 (defn create-tables
   "Creates all tables."
@@ -72,6 +72,7 @@
                    :read_articles
                    (hayt/column-definitions {:user_email :varchar
                                              :article_id :uuid
+                                             :like :int
                                              :primary-key [:user_email :article_id]})))  
     (alia/execute (hayt/create-table 
                    :user_articles
@@ -92,17 +93,20 @@
 (defn add-user
   "Add a new user."
   [session user]
-  (alia/execute session (insert :users user)))
+  (alia/execute session
+                (insert :users (values user))))
 
 (defn get-user
   "Get a user by is email address."
   [session email]
-  (alia/execute (select session :users (where {:email email}))))
+  (alia/execute session
+                (select :users (where {:email email}))))
 
 (defn get-all-users
   "Get all users."
   [session]
-  (alia/execute session (select :users)))
+  (alia/execute session
+                (select :users)))
 
 
 ;;
@@ -110,23 +114,29 @@
 ;;
 
 (defn add-article
+  "Add new article."
   [session article]
-  (alia/execute session (insert :articles article)))
+  (alia/execute session
+                (insert :articles (values article))))
 
 (defn get-all-articles
+  "Get all articles."
   [session]
-  (alia/execute session (select :articles)))
+  (alia/execute session 
+                (select :articles)))
 
 (defn add-read-article
+  "Add an article to a user read articles."
   [session user article]
-  (let [statement (insert  :read-articles
-                                 {:user_email (:email user)
-                                  :article_id (:id article)})]
-    (println "statement: " statement))
-  (alia/execute session (insert  :read-articles
-                                 {:user_email (:email user)
-                                  :article_id (:id article)})))
+  (alia/execute session 
+                (insert  :read_articles
+                         (values {:user_email (:email user)
+                                  :article_id (:id article)
+                                  :like (:like article)}))))
 
 (defn get-all-read-articles
-  [session]
-  (alia/execute session (select :read_articles)))
+  "Get all read articles for a user."
+  [session user-email]
+  (alia/execute session 
+                (select :read_articles 
+                        (where {:user_email user-email}))))
