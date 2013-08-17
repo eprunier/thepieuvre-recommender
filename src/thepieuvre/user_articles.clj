@@ -12,4 +12,5 @@
 
 (defn stop
   [s]
+  (db/disconnect (:db s))
   (assoc s :db nil))

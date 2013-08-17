@@ -1,7 +1,7 @@
 (ns thepieuvre.user-articles.services.db
-  (:require [clojurewerkz.cassaforte.client :as client]
-            [clojurewerkz.cassaforte.multi.cql :as cql]
-            [clojurewerkz.cassaforte.query :as query]))
+  (:require [qbits.alia :as alia]
+            [qbits.alia.uuid :as uuid]
+            [qbits.hayt :refer [select insert where] :as hayt]))
 
 ;;
 ;; ## Connection
@@ -27,48 +27,62 @@
   [& {:keys [hosts port]
       :or {hosts ["127.0.0.1"]
            port 9042}}]
-  (-> {:contact-points hosts
-       :port port}
-      client/build-cluster
-      (client/connect :thepieuvre)))
+  (let [cluster (alia/cluster hosts :port port)]
+    (alia/connect cluster "thepieuvre")))
 
+(defn disconnect
+  [session]
+  (alia/shutdown session))
 
 ;;
 ;; ## Utilities
 ;;
 
+(defn new-uuid
+  "Create a random UUID."
+  []
+  (uuid/random))
+
+(defn drop-tables
+  "Drop all tables."
+  [session]
+  (alia/with-session session
+    (doseq [table [:users :articles :read_articles :user_articles]]
+     (alia/execute (hayt/drop-table table)))))
+
 (defn create-tables
   "Creates all tables."
   [session]
-  (cql/create-table session
-                    :users
-                    (query/column-definitions {:email :varchar
-                                               :password :varchar
-                                               :first_name :varchar
-                                               :last_name :varchar
-                                               :primary-key [:email]}))
-  (cql/create-table session
-                    :articles
-                    (query/column-definitions {:id :uuid
-                                               :feed_id :uuid
-                                               :date :timestamp
-                                               :article_title :varchar
-                                               :primary-key [:id]}))
-  (cql/create-table session
-                    :read_articles
-                    (query/column-definitions {:user_email :varchar
-                                               :article_id :uuid
-                                               :primary-key [:user_email :article_id]}))  
-  (cql/create-table session
-                    :user_articles
-                    (query/column-definitions {:user_email :varchar
-                                               :article_id :uuid
-                                               :primary-key [:user_email :article_id]})))
+  (alia/with-session session
+    (alia/execute (hayt/create-table 
+                   :users
+                   (hayt/column-definitions {:email :varchar
+                                             :password :varchar
+                                             :first_name :varchar
+                                             :last_name :varchar
+                                             :primary-key [:email]})))
+    (alia/execute (hayt/create-table
+                   :articles
+                   (hayt/column-definitions {:id :uuid
+                                             :feed_id :uuid
+                                             :date :timestamp
+                                             :article_title :varchar
+                                             :primary-key [:id]})))
+    (alia/execute (hayt/create-table 
+                   :read_articles
+                   (hayt/column-definitions {:user_email :varchar
+                                             :article_id :uuid
+                                             :primary-key [:user_email :article_id]})))  
+    (alia/execute (hayt/create-table 
+                   :user_articles
+                   (hayt/column-definitions {:user_email :varchar
+                                             :article_id :uuid
+                                             :primary-key [:user_email :article_id]})))))
 
 (defn execute
   "Execute a CQL query."
   [session query]
-  (client/execute session query))
+  (alia/execute session query))
 
 
 ;;
@@ -78,17 +92,17 @@
 (defn add-user
   "Add a new user."
   [session user]
-  (cql/insert session :users user))
+  (alia/execute session (insert :users user)))
 
 (defn get-user
   "Get a user by is email address."
   [session email]
-  (cql/select session :users (query/where :email email)))
+  (alia/execute (select session :users (where {:email email}))))
 
 (defn get-all-users
   "Get all users."
   [session]
-  (cql/select session :users))
+  (alia/execute session (select :users)))
 
 
 ;;
@@ -97,20 +111,22 @@
 
 (defn add-article
   [session article]
-  (cql/insert session :articles article))
+  (alia/execute session (insert :articles article)))
 
 (defn get-all-articles
   [session]
-  (cql/select session :articles))
+  (alia/execute session (select :articles)))
 
 (defn add-read-article
   [session user article]
-  (println (:email user))
-  (println (:id article))
-  (cql/insert session :read-articles
-              {:user_email (:email user)
-               :article_id (:id article)}))
+  (let [statement (insert  :read-articles
+                                 {:user_email (:email user)
+                                  :article_id (:id article)})]
+    (println "statement: " statement))
+  (alia/execute session (insert  :read-articles
+                                 {:user_email (:email user)
+                                  :article_id (:id article)})))
 
 (defn get-all-read-articles
   [session]
-  (cql/select session :read_articles))
+  (alia/execute session (select :read_articles)))
