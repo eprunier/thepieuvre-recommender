@@ -1,5 +1,5 @@
-(ns thepieuvre.user-articles
-  (:require [thepieuvre.user-articles.services.db :as db]))
+(ns thepieuvre.articles.system
+  (:require [thepieuvre.articles.service.db :as db]))
 
 (defn system
   []

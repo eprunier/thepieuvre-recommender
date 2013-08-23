@@ -11,8 +11,8 @@
    [clojure.string :as str]
    [clojure.test :as test]
    [clojure.tools.namespace.repl :refer (refresh refresh-all)]
-   [thepieuvre.user-articles :as thepieuvre]
-   [thepieuvre.user-articles.services.db :as db]))
+   [thepieuvre.articles.system :as system]
+   [thepieuvre.articles.service.db :as db]))
 
 (def system
   "A Var containing an object representing the application under
@@ -24,13 +24,13 @@
   #'system."
   []
   (alter-var-root #'system
-                  (constantly (thepieuvre/system))))
+                  (constantly (system/system))))
 
 (defn start
   "Starts the system running, updates the Var #'system."
   []
   (alter-var-root #'system
-                  thepieuvre/start))
+                  system/start))
 
 (defn stop
   "Stops the system if it is currently running, updates the Var
@@ -38,7 +38,7 @@
   []
   (alter-var-root #'system
                   (fn [s]
-                    (when s (thepieuvre/stop s)))))
+                    (when s (system/stop s)))))
 
 (defn go
   "Initializes and starts the system running."

@@ -1,4 +1,4 @@
-(ns thepieuvre.user-articles.services.db
+(ns thepieuvre.articles.service.db
   (:require [qbits.alia :as alia]
             [qbits.alia.uuid :as uuid]
             [qbits.hayt :refer [select where insert values] :as hayt]))
@@ -31,6 +31,7 @@
     (alia/connect cluster "thepieuvre")))
 
 (defn disconnect
+  "Close database connection."
   [session]
   (alia/shutdown session))
 
@@ -67,6 +68,7 @@
                                              :feed_id :uuid
                                              :date :timestamp
                                              :article_title :varchar
+                                             :keywords (hayt/set-type :varchar)
                                              :primary-key [:id]})))
     (alia/execute (hayt/create-table 
                    :read_articles
@@ -116,6 +118,7 @@
 (defn add-article
   "Add new article."
   [session article]
+  (println (insert :articles (values article)))
   (alia/execute session
                 (insert :articles (values article))))
 
@@ -135,6 +138,12 @@
                                   :like (:like article)}))))
 
 (defn get-all-read-articles
+  "Get all read articles for a user."
+  [session]
+  (alia/execute session
+                (select :read_articles)))
+
+(defn get-read-articles
   "Get all read articles for a user."
   [session user-email]
   (alia/execute session 
