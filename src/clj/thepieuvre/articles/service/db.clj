@@ -33,7 +33,8 @@
 (defn disconnect
   "Close database connection."
   [session]
-  (alia/shutdown session))
+  (when session
+    (alia/shutdown session)))
 
 ;;
 ;; ## Utilities
@@ -57,10 +58,11 @@
   (alia/with-session session
     (alia/execute (hayt/create-table 
                    :users
-                   (hayt/column-definitions {:email :varchar
+                   (hayt/column-definitions {:login :varchar
                                              :password :varchar
                                              :first_name :varchar
                                              :last_name :varchar
+                                             :email :varchar
                                              :primary-key [:email]})))
     (alia/execute (hayt/create-table
                    :articles
@@ -72,10 +74,10 @@
                                              :primary-key [:id]})))
     (alia/execute (hayt/create-table 
                    :read_articles
-                   (hayt/column-definitions {:user_email :varchar
+                   (hayt/column-definitions {:user_login :varchar
                                              :article_id :uuid
                                              :like :int
-                                             :primary-key [:user_email :article_id]})))  
+                                             :primary-key [:user_login :article_id]})))  
     (alia/execute (hayt/create-table 
                    :user_articles
                    (hayt/column-definitions {:user_email :varchar
@@ -132,10 +134,10 @@
   "Add an article to a user read articles."
   [session user article]
   (alia/execute session 
-                (insert  :read_articles
-                         (values {:user_email (:email user)
-                                  :article_id (:id article)
-                                  :like (:like article)}))))
+                (insert :read_articles
+                        (values {:user_login (:login user)
+                                 :article_id (java.util.UUID/fromString (:id article))
+                                 :like (:like article)}))))
 
 (defn get-all-read-articles
   "Get all read articles for a user."

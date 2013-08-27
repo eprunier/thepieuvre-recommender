@@ -2,6 +2,8 @@
   (:require [thrift-clj.core :as thrift]
             [thepieuvre.articles.service.db :as db]))
 
+(def db)
+
 ;;
 ;; ## Thrift imports
 ;;
@@ -17,24 +19,32 @@
 (thrift/defservice articles-service
   ArticlesService
   (addReadArticle [user article]
-                  (db/add-read-article user article))
+                  (db/add-read-article db user article))
   (getReadArticles [user]
-                   (db/get-read-articles user)))
+                   (db/get-read-articles db user)))
 
 ;;
 ;; ## Service launcher
 ;;
 
-(defn run-server
-  [server-fn host port]
-  (let [server (server-fn articles-service port :bind host)]
-    (println "Thrift server started on" (str host ":" port))
-    (thrift/serve-and-block! server)))
+(defn create
+  [db & {:keys [host port]
+             :or {host "127.0.0.1"
+                  port "7007"}}]
+  (println "Creating Thrift service on" (str host ":" port))
+  (thrift/multi-threaded-server articles-service
+                                (Integer/parseInt port)
+                                :bind host))
 
-(defn -main
-  [& {:keys [host port]
-      :or {host "127.0.0.1"
-           port "7007"}}]
-  (run-server thrift/multi-threaded-server
-              host
-              (Integer/parseInt port)))
+(defn start
+  [server system]
+  (alter-var-root #'db
+                  (constantly (:db system)))
+  (let [server (thrift/serve! server)]
+    (println "Service Thrift started")
+    (assoc system
+      :server server)))
+
+(defn stop
+  [server]
+  (.stop server))

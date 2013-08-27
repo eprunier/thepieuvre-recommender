@@ -9,7 +9,6 @@
   [connexion user-login article-id article-like]
   (let [user (User. user-login)
         article (Article. article-id article-like)]
-    (println "add article" article "to user" user)
     (ArticlesService/addReadArticle connexion user article)))
 
 (defn- get-read-articles
