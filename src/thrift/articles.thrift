@@ -10,6 +10,6 @@ struct Article {
 }
 
 service ArticlesService {
-  Article addReadArticle(1:User user, 2:Article article),
+  void addReadArticle(1:User user, 2:Article article),
   list<Article> getReadArticles(1:User user)
 }

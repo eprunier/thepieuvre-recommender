@@ -49,14 +49,14 @@
   "Drop all tables."
   [session]
   (alia/with-session session
-    (doseq [table [:users :articles :read_articles :user_articles]]
+    (doseq [table [:read_articles]]
       (alia/execute (hayt/drop-table table)))))
 
 (defn create-tables
   "Creates all tables."
   [session]
   (alia/with-session session
-    (alia/execute (hayt/create-table 
+    #_(alia/execute (hayt/create-table 
                    :users
                    (hayt/column-definitions {:login :varchar
                                              :password :varchar
@@ -64,7 +64,7 @@
                                              :last_name :varchar
                                              :email :varchar
                                              :primary-key [:email]})))
-    (alia/execute (hayt/create-table
+    #_(alia/execute (hayt/create-table
                    :articles
                    (hayt/column-definitions {:id :uuid
                                              :feed_id :uuid
@@ -75,10 +75,10 @@
     (alia/execute (hayt/create-table 
                    :read_articles
                    (hayt/column-definitions {:user_login :varchar
-                                             :article_id :uuid
+                                             :article_id :varchar
                                              :like :int
                                              :primary-key [:user_login :article_id]})))  
-    (alia/execute (hayt/create-table 
+    #_(alia/execute (hayt/create-table 
                    :user_articles
                    (hayt/column-definitions {:user_email :varchar
                                              :article_id :uuid
@@ -136,7 +136,7 @@
   (alia/execute session 
                 (insert :read_articles
                         (values {:user_login (:login user)
-                                 :article_id (java.util.UUID/fromString (:id article))
+                                 :article_id (:id article)
                                  :like (:like article)}))))
 
 (defn get-all-read-articles
