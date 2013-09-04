@@ -1,15 +1,29 @@
-namespace java thepieuvre.articles.service
-
-struct User {
-  1: string login
-}
+namespace java recommender.service
 
 struct Article {
   1: string id,
-  2: i32 like
+  2: bool read,
+  3: byte like
 }
 
 service ArticlesService {
-  void addReadArticle(1:User user, 2:Article article),
-  list<Article> getReadArticles(1:User user)
+  /**
+   * Returns a list of articles from a list of articles IDs.
+   */
+  list<Article> getArticles(1:string username, 2:list<string> articlesIDs),
+
+  /**
+   * Associates an article to the user.
+   */
+  void addArticle(1:string username, 2:Article article),
+
+  /**
+   * Returns all articles read by the user.
+   */
+  list<string> getReadArticles(1:string username),
+
+  /**
+   * Indicates whether the article was read by the user.
+   */
+  bool isRead(1:string username, 2:string articleID)
 }

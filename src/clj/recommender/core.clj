@@ -1,6 +1,6 @@
-(ns thepieuvre.articles.core
-  (:require [thepieuvre.articles.service.db :as db]
-            [thepieuvre.articles.server :as server]))
+(ns recommender.core
+  (:require [recommender.service.db :as db]
+            [recommender.server :as server]))
 
 (defn system
   []

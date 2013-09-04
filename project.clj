@@ -1,4 +1,4 @@
-(defproject thepieuvre/articles "0.1.0-SNAPSHOT"
+(defproject recommender "0.1.0-SNAPSHOT"
   :description "TODO"
   :url "TODO"
   :license {:name "Eclipse Public License"
@@ -9,7 +9,8 @@
                  [thrift-clj "0.2.0"]
                  [org.xerial.snappy/snappy-java "1.0.4.1"]]
   :profiles {:dev {:dependencies [[org.clojure/tools.namespace "0.2.4"]]
-                   :source-paths ["dev"]}}
+                   :source-paths ["dev"]}
+             :thriftc {}}
   :source-paths ["src/clj"]
   :plugins [[lein-thriftc "0.1.0"]]
   :thriftc {:source-paths ["src/thrift"]})

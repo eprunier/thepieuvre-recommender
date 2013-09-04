@@ -11,9 +11,9 @@
    [clojure.string :as str]
    [clojure.test :as test]
    [clojure.tools.namespace.repl :refer (refresh refresh-all)]
-   [thepieuvre.articles.core :as core]
-   [thepieuvre.articles.service.db :as db]
-   [thepieuvre.articles.client :as client]))
+   [recommender.core :as core]
+   [recommender.service.db :as db]
+   [recommender.client :as client]))
 
 (def system
   "A Var containing an object representing the application under

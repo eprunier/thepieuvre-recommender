@@ -1,4 +1,4 @@
-# thepieuvre/read-articles
+# Recommender
 
 TODO: Brief description
 
@@ -8,13 +8,13 @@ TODO: Brief description
 
 [Leiningen] dependency information:
 
-    [thepieuvre/user-articles "0.1.0-SNAPSHOT"]
+    [recommender "0.1.0-SNAPSHOT"]
 
 [Maven] dependency information:
 
     <dependency>
-      <groupId>thepieuvre</groupId>
-      <artifactId>user-articles</artifactId>
+      <groupId>recommender</groupId>
+      <artifactId>recommender</artifactId>
       <version>0.1.0-SNAPSHOT</version>
     </dependency>
 
