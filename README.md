@@ -3,30 +3,15 @@
 TODO: Brief description
 
 
-
-## Dependency Information
-
-[Leiningen] dependency information:
-
-    [recommender "0.1.0-SNAPSHOT"]
-
-[Maven] dependency information:
-
-    <dependency>
-      <groupId>recommender</groupId>
-      <artifactId>recommender</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
-    </dependency>
-
-[Leiningen]: http://leiningen.org/
-[Maven]: http://maven.apache.org/
-
-
-
 ## Usage
 
-TODO
+Install [Leiningen] then:
 
+   lein run
+
+The Recommender Thrift service is now listening on port 7007.
+
+[Leiningen]: http://leiningen.org/
 
 
 ## Copyright and License
