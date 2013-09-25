@@ -178,14 +178,6 @@
                      (select :user_read_articles 
                              (where {:username username})))))
 
-(defn find-articles
-  [session username articles-ids]
-  (map :article_id
-       (alia/execute session
-                     (select :user_read_articles
-                             (where {:username username
-                                     :article_id [:in articles-ids]})))))
-
 (defn get-readers
   "Get readers for the specified article"
   [session article-id]

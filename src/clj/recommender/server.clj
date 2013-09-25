@@ -20,8 +20,10 @@
 (defn get-articles
   [username articles-ids]
   (let [articles-set (set articles-ids)
-        read-articles-set (->> articles-set
-                               (db/find-articles *db* username)
+        read-articles-set (->> (for [article-id articles-ids]
+                                 (when (db/read? *db* username article-id)
+                                   article-id))
+                               (filter #(not (nil? %)))
                                set)
         unread-articles-set (clojure.set/difference articles-set read-articles-set)]
     (-> []
@@ -36,9 +38,7 @@
 (thrift/defservice articles-service
   ArticlesService
   (getArticles [username articles-ids]
-               (let [results (get-articles username articles-ids)]
-                 (println "results:" results)
-                 results))
+               (get-articles username articles-ids))
   (addArticle [username article]
               (db/add-article *db* username article))
   (getReadArticles [username]
@@ -65,10 +65,12 @@
   (alter-var-root #'*db*
                   (constantly (:db system)))
   (let [server (thrift/serve! server)]
-    (println "Service Thrift started")
+    (println "Thrift service started")
     (assoc system
       :server server)))
 
 (defn stop
   [server]
-  (.stop server))
+  (when server
+    (.stop server))
+  (println "Service stopped"))
