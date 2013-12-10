@@ -9,7 +9,9 @@ This project aims to provide a recommender system for [The Pieuvre].
 
 ### Apache Cassandra
 
-Install Apache Cassandra 2.0 and run it.
+Install Apache [Cassandra] 2.0 and run it.
+
+[Cassandra]: http://cassandra.apache.org
 
 ### Thrift
 
