@@ -1,17 +1,40 @@
-# Recommender
+# ThePieuvre Recommender Service
 
-TODO: Brief description
+This project aims to provide a recommender system for [The Pieuvre].
+
+[The Pieuvre]: http://thepieuvre.com
 
 
-## Usage
+## Requirements
 
-Install [Leiningen] then:
+### Apache Cassandra
 
-   lein run
+Install Apache Cassandra 2.0 and run it.
 
-The Recommender Thrift service is now listening on port 7007.
+### Thrift
 
-[Leiningen]: http://leiningen.org/
+Install Apache [Thrift] 0.9.1 and place the Thrift compiler on your system path.
+
+[Thrift]: http://thrift.apache.org
+
+### Leiningen
+
+[Leiningen] is the build tool for Clojure projects.
+Download the 'lein' script and place it on your system path.
+
+[Leiningen]: http://leiningen.org
+
+
+## Running
+
+Run the service with [Leiningen]:
+
+   lein run [thrift-host <host>] [thrift-port <port>] \
+	   [cassandra-hosts <hosts>] [cassandra-port <port>] \
+	   [redis-host <host>] [redis-port <port>]
+
+The Recommender Service is now listening on port 7007 (or the given thrift-port) 
+for Thrift requests and on a redis queue named 'queue:recommender'.
 
 
 ## Copyright and License
@@ -26,4 +49,3 @@ license. You must not remove this notice, or any other, from this
 software.
 
 [Eclipse Public License 1.0]: http://opensource.org/licenses/eclipse-1.0.php
-
