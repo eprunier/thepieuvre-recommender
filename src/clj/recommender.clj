@@ -9,7 +9,7 @@
    :cassandra-hosts ["127.0.0.1"]
    :cassandra-port 9042
    :redis-host "127.0.0.1"
-   :redis-port "6379"})
+   :redis-port 6379})
 
 (defn start
   "Start the system."
