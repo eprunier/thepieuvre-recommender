@@ -11,7 +11,7 @@
    [clojure.string :as str]
    [clojure.test :as test]
    [clojure.tools.namespace.repl :refer (refresh refresh-all)]
-   [recommender.core :as core]
+   [recommender]
    [recommender.service.db :as db]
    [recommender.client :as client]))
 
@@ -25,13 +25,13 @@
   #'system."
   []
   (alter-var-root #'system
-                  (constantly (core/system))))
+                  (constantly (recommender/system))))
 
 (defn start
   "Starts the system running, updates the Var #'system."
   []
   (alter-var-root #'system
-                  core/start))
+                  recommender/start))
 
 (defn stop
   "Stops the system if it is currently running, updates the Var
@@ -39,7 +39,7 @@
   []
   (alter-var-root #'system
                   (fn [s]
-                    (when s (core/stop s)))))
+                    (when s (recommender/stop s)))))
 
 (defn go
   "Initializes and starts the system running."
