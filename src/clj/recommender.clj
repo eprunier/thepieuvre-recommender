@@ -24,3 +24,7 @@
   [system]
   (db/disconnect!)
   (server/stop!))
+
+(defn -main
+  [& {:as args}]
+  (start (system)))

@@ -12,8 +12,7 @@
    [clojure.test :as test]
    [clojure.tools.namespace.repl :refer (refresh refresh-all)]
    [recommender]
-   [recommender.service.db :as db]
-   [recommender.client :as client]))
+   [recommender.service.db :as db]))
 
 (def system
   "A Var containing an object representing the application under

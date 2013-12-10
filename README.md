@@ -1,4 +1,4 @@
-# ThePieuvre Recommender Service
+# ThePieuvre Recommender
 
 This project aims to provide a recommender system for [The Pieuvre].
 
@@ -21,7 +21,7 @@ Install [Redis] and run it.
 
 ### Thrift
 
-Install Apache [Thrift] 0.9.1 and place the Thrift compiler on your system path.
+Install Apache [Thrift] 0.9.0 and place the Thrift compiler on your system path.
 
 [Thrift]: http://thrift.apache.org
 
@@ -35,11 +35,15 @@ Download the 'lein' script and place it on your system path.
 
 ## Running
 
-Run the service with [Leiningen]:
+Generate Thrift classes:
 
-   lein run [thrift-host <host>] [thrift-port <port>] 
-	   [cassandra-hosts <hosts>] [cassandra-port <port>] 
-	   [redis-host <host>] [redis-port <port>]
+	lein with-profile thriftc thriftc
+
+Run the service:
+
+	lein run [thrift-host <host>] [thrift-port <port>] 
+		[cassandra-hosts <hosts>] [cassandra-port <port>] 
+		[redis-host <host>] [redis-port <port>]
 
 The Recommender Service is now listening on port 7007 (or the given thrift-port) 
 for Thrift requests and on a redis queue named 'queue:recommender'.

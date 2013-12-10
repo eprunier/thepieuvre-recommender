@@ -1,4 +1,4 @@
-(defproject thepieuvre-recommender-service "0.1.0-SNAPSHOT"
+(defproject thepieuvre-recommender "0.1.0-SNAPSHOT"
   :description "This project aims to provide a recommender system for thepieuvre.com"
   :url "https://github.com/eprunier/thepieuvre-recommender"
   :license {:name "Eclipse Public License"
@@ -14,4 +14,5 @@
              :thriftc {}}
   :source-paths ["src/clj"]
   :plugins [[lein-thriftc "0.1.0"]]
-  :thriftc {:source-paths ["src/thrift"]})
+  :thriftc {:source-paths ["src/thrift"]}
+  :main recommender)
