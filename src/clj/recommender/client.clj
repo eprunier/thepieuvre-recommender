@@ -12,7 +12,7 @@
 
 (def ^:dynamic *connection*)
 
-(defn- connect!
+(defn connect!
   "Open Thrift connection."
   ([]
      (connect! "127.0.0.1" 7007))
@@ -21,7 +21,7 @@
        (alter-var-root #'*connection*
                        (constantly connection)))))
 
-(defn- disconnect!
+(defn disconnect!
   "Close Thrift connection."
   []
   (when *connection*

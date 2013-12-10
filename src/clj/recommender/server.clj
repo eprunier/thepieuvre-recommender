@@ -47,7 +47,7 @@
   "Start Thrift server."
   [host port]
   (let [server (-> articles-service
-                   (thrift/multi-threaded-server (Integer/parseInt port)
+                   (thrift/multi-threaded-server port
                                                  :bind host
                                                  :protocol :compact)
                    thrift/serve!)]
