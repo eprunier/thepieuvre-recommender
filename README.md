@@ -13,6 +13,12 @@ Install Apache [Cassandra] 2.0 and run it.
 
 [Cassandra]: http://cassandra.apache.org
 
+### Redis
+
+Install [Redis] and run it.
+
+[Redis]: http://redis.io
+
 ### Thrift
 
 Install Apache [Thrift] 0.9.1 and place the Thrift compiler on your system path.
@@ -21,7 +27,7 @@ Install Apache [Thrift] 0.9.1 and place the Thrift compiler on your system path.
 
 ### Leiningen
 
-[Leiningen] is the build tool for Clojure projects.
+[Leiningen] is a build tool for Clojure projects.
 Download the 'lein' script and place it on your system path.
 
 [Leiningen]: http://leiningen.org
@@ -31,8 +37,8 @@ Download the 'lein' script and place it on your system path.
 
 Run the service with [Leiningen]:
 
-   lein run [thrift-host <host>] [thrift-port <port>] \
-	   [cassandra-hosts <hosts>] [cassandra-port <port>] \
+   lein run [thrift-host <host>] [thrift-port <port>] 
+	   [cassandra-hosts <hosts>] [cassandra-port <port>] 
 	   [redis-host <host>] [redis-port <port>]
 
 The Recommender Service is now listening on port 7007 (or the given thrift-port) 
