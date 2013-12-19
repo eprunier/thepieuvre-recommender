@@ -61,3 +61,7 @@ license. You must not remove this notice, or any other, from this
 software.
 
 [Eclipse Public License 1.0]: http://opensource.org/licenses/eclipse-1.0.php
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/eprunier/thepieuvre-recommender/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
